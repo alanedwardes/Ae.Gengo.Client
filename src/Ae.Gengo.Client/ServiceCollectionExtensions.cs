@@ -1,5 +1,4 @@
-﻿using Ae.Gengo.Client.Internal;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http;
 

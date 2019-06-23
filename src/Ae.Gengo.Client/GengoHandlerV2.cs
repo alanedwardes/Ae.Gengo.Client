@@ -9,12 +9,19 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Ae.Gengo.Client.Internal
+namespace Ae.Gengo.Client
 {
-    internal sealed class GengoHandlerV2 : DelegatingHandler
+    /// <summary>
+    /// Provides authentication services around the Gengo API, including request and response wrapping / unwrapping.
+    /// </summary>
+    public sealed class GengoHandlerV2 : DelegatingHandler
     {
         private readonly IGengoConfigV2 _config;
 
+        /// <summary>
+        /// Create a new instance of the <see cref="GengoHandlerV2"/> with the specified <see cref="IGengoConfigV2"/>.
+        /// </summary>
+        /// <param name="config"></param>
         public GengoHandlerV2(IGengoConfigV2 config)
         {
             _config = config;
