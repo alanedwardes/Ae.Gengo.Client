@@ -1,12 +1,15 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Ae.Gengo.Client.Internal
 {
-    internal static class HttpResponseExtensions
+    internal static class ClientExtensions
     {
         private static readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings
         {
@@ -24,6 +27,18 @@ namespace Ae.Gengo.Client.Internal
         {
             var content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<TResponse>(content, serializerSettings);
+        }
+
+        public static string ToQueryString(this NameValueCollection query)
+        {
+            if (query.Count == 0)
+            {
+                return string.Empty;
+            }
+
+            var items = query.AllKeys.SelectMany(key => query.GetValues(key).Select(value => $"{HttpUtility.UrlEncode(key)}={HttpUtility.UrlEncode(value)}"));
+
+            return "?" + string.Join("&", items);
         }
     }
 }

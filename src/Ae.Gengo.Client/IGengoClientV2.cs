@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Ae.Gengo.Client.Entities;
+using Ae.Gengo.Client.Operations;
 
 namespace Ae.Gengo.Client
 {
@@ -23,8 +24,9 @@ namespace Ae.Gengo.Client
         /// <summary>
         /// Gets a set of job summary objects.
         /// </summary>
+        /// <param name="getJobs"></param>
         /// <returns></returns>
-        Task<CreatedJobSummary[]> GetJobs();
+        Task<CreatedJobSummary[]> GetJobs(GetJobs getJobs);
         /// <summary>
         /// Gets language pairs from the service.
         /// </summary>

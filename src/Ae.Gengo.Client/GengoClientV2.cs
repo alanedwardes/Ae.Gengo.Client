@@ -1,5 +1,8 @@
 ﻿using Ae.Gengo.Client.Entities;
 using Ae.Gengo.Client.Internal;
+using Ae.Gengo.Client.Operations;
+using System;
+using System.Collections.Specialized;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -27,9 +30,26 @@ namespace Ae.Gengo.Client
         }
 
         /// <inheritdoc/>
-        public async Task<CreatedJobSummary[]> GetJobs()
+        public async Task<CreatedJobSummary[]> GetJobs(GetJobs getJobs)
         {
-            var response = await httpClient.GetAsync("v2/translate/jobs");
+            var query = new NameValueCollection();
+
+            if (getJobs.Status.HasValue)
+            {
+                query.Add("status", getJobs.Status.Value.ToString().ToLower());
+            }
+
+            if (getJobs.After.HasValue)
+            {
+                query.Add("timestamp_after", getJobs.After.Value.ToUnixTimeSeconds().ToString());
+            }
+
+            if (getJobs.Count.HasValue)
+            {
+                query.Add("count", getJobs.Count.Value.ToString());
+            }
+
+            var response = await httpClient.GetAsync($"v2/translate/jobs{query.ToQueryString()}");
             return await response.Deserialize<CreatedJobSummary[]>();
         }
 
