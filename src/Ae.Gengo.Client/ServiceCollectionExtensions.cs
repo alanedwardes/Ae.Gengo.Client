@@ -16,6 +16,7 @@ namespace Ae.Gengo.Client
         /// </summary>
         /// <param name="services"></param>
         /// <param name="config"></param>
+        /// <param name="configureClient"></param>
         /// <returns></returns>
         public static IServiceCollection AddGengoClientV2(this IServiceCollection services, IGengoConfigV2 config, Action<HttpClient> configureClient)
         {
