@@ -4,6 +4,7 @@ using Ae.Gengo.Client.Operations;
 using System;
 using System.Collections.Specialized;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ae.Gengo.Client
@@ -23,14 +24,17 @@ namespace Ae.Gengo.Client
         }
 
         /// <inheritdoc/>
-        public async Task<CreatedJobs> CreateJobs(CreateJobs jobs)
+        public async Task<CreatedJobs> CreateJobs(CreateJobs jobs, CancellationToken token)
         {
-            var response = await httpClient.PostAsync("v2/translate/jobs", jobs.Serialize());
+            var response = await httpClient.PostAsync("v2/translate/jobs", jobs.Serialize(), token);
             return await response.Deserialize<CreatedJobs>();
         }
 
         /// <inheritdoc/>
-        public async Task<CreatedJobSummary[]> GetJobs(GetJobs getJobs)
+        public Task<CreatedJobSummary[]> GetJobs(CancellationToken token) => GetJobs(new GetJobs(), token);
+
+        /// <inheritdoc/>
+        public async Task<CreatedJobSummary[]> GetJobs(GetJobs getJobs, CancellationToken token)
         {
             var query = new NameValueCollection();
 
@@ -49,28 +53,28 @@ namespace Ae.Gengo.Client
                 query.Add("count", getJobs.Count.Value.ToString());
             }
 
-            var response = await httpClient.GetAsync($"v2/translate/jobs{query.ToQueryString()}");
+            var response = await httpClient.GetAsync($"v2/translate/jobs{query.ToQueryString()}", token);
             return await response.Deserialize<CreatedJobSummary[]>();
         }
 
         /// <inheritdoc/>
-        public async Task<LanguagePair[]> GetLanguagePairs()
+        public async Task<LanguagePair[]> GetLanguagePairs(CancellationToken token)
         {
-            var response = await httpClient.GetAsync("v2/translate/service/language_pairs");
+            var response = await httpClient.GetAsync("v2/translate/service/language_pairs", token);
             return await response.Deserialize<LanguagePair[]>();
         }
 
         /// <inheritdoc/>
-        public async Task<SingleJob> GetJob(int jobId)
+        public async Task<SingleJob> GetJob(int jobId, CancellationToken token)
         {
-            var response = await httpClient.GetAsync($"v2/translate/job/{jobId}");
+            var response = await httpClient.GetAsync($"v2/translate/job/{jobId}", token);
             return await response.Deserialize<SingleJob>();
         }
 
         /// <inheritdoc/>
-        public async Task<MeResponse> GetMe()
+        public async Task<MeResponse> GetMe(CancellationToken token)
         {
-            var response = await httpClient.GetAsync("v2/account/me");
+            var response = await httpClient.GetAsync("v2/account/me", token);
             return await response.Deserialize<MeResponse>();
         }
     }

@@ -27,7 +27,7 @@ namespace Ae.Gengo.Client
             _config = config;
         }
 
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken token)
         {
             request.Headers.Add("Accept", "application/json");
 
@@ -61,14 +61,14 @@ namespace Ae.Gengo.Client
                 });
             }
 
-            var response = await base.SendAsync(request, cancellationToken);
+            var response = await base.SendAsync(request, token);
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
             var wrappedResponse = JsonConvert.DeserializeObject<WrappedResponse>(responseContent);
             if (wrappedResponse.Status != OperationStatus.Ok)
             {
-                throw new Exception($"Exception from API: {JsonConvert.SerializeObject(wrappedResponse.Error)}");
+                throw new GengoExceptionV2(wrappedResponse.Error);
             }
 
             response.Content = new StringContent(JsonConvert.SerializeObject(wrappedResponse.Response), Encoding.UTF8);

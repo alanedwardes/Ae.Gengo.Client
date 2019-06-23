@@ -10,6 +10,6 @@ namespace Ae.Gengo.Client.Entities
         [DataMember(Name = "response")]
         public object Response { get; set; }
         [DataMember(Name = "err", IsRequired = false)]
-        public object Error { get; set; }
+        public OperationError Error { get; set; }
     }
 }
