@@ -6,7 +6,7 @@ namespace Ae.Gengo.Client
     /// <summary>
     /// Represents a client to access the Gengo (https://gengo.com) API.
     /// </summary>
-    internal interface IGengoClientV2
+    public interface IGengoClientV2
     {
         /// <summary>
         /// Creates a batch of translation jobs.
