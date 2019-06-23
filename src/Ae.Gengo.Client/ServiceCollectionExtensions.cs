@@ -1,5 +1,7 @@
 ﻿using Ae.Gengo.Client.Internal;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Net.Http;
 
 namespace Ae.Gengo.Client
 {
@@ -15,13 +17,13 @@ namespace Ae.Gengo.Client
         /// <param name="services"></param>
         /// <param name="config"></param>
         /// <returns></returns>
-        public static IServiceCollection AddGengoClientV2(this IServiceCollection services, IGengoConfigV2 config)
+        public static IServiceCollection AddGengoClientV2(this IServiceCollection services, IGengoConfigV2 config, Action<HttpClient> configureClient)
         {
             services.AddSingleton(config)
                 .AddTransient<GengoHandlerV2>()
                 .AddSingleton<IGengoClientV2, GengoClientV2>();
 
-            services.AddHttpClient<IGengoClientV2, GengoClientV2>()
+            services.AddHttpClient<IGengoClientV2, GengoClientV2>(configureClient)
                 .AddHttpMessageHandler<GengoHandlerV2>();
 
             return services;

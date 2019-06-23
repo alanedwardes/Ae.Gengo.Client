@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <Description>A client for https://gengo.com/ translation service for .NET Core.</Description>
     <Authors>alanedwardes</Authors>
     <WarningsAsErrors>true</WarningsAsErrors>
@@ -10,7 +10,6 @@
     <PackageTags>gengo</PackageTags>
     <PackageIconUrl>https://avatars.githubusercontent.com/u/110954</PackageIconUrl>
     <PackageProjectUrl>https://github.com/alanedwardes/Ae.Gengo.Client</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/alanedwardes/Ae.Gengo.Client/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
