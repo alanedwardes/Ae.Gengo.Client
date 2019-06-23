@@ -12,7 +12,7 @@ IGengoConfigV2 config = new GengoConfigV2
 
 ServiceCollection services = new ServiceCollection();
 
-services.AddGengoClientV2(config, options => options.BaseAddress = new Uri("http://api.sandbox.gengo.com/"));
+services.AddGengoClientV2(config, options => options.BaseAddress = new Uri("http://api.gengo.com/"));
 
 IServiceProvider provider = services.BuildServiceProvider();
 
