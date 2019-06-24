@@ -9,8 +9,14 @@ namespace Ae.Gengo.Client.Entities
         /// <summary>
         /// Order ID
         /// </summary>
+        [DataMember(Name = "job_id")]
+        public uint JobId { get; set; }
+
+        /// <summary>
+        /// Order ID
+        /// </summary>
         [DataMember(Name = "order_id")]
-        public int OrderId { get; set; }
+        public uint OrderId { get; set; }
 
         /// <summary>
         /// Translated body of text (if available).

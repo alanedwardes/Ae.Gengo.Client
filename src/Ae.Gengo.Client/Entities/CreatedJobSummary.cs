@@ -10,7 +10,7 @@ namespace Ae.Gengo.Client.Entities
         /// Job ID
         /// </summary>
         [DataMember(Name = "job_id")]
-        public int JobId { get; set; }
+        public uint JobId { get; set; }
 
         /// <summary>
         /// Unix Timestamp for when this job was submitted (by you - not by the translator).

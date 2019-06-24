@@ -10,7 +10,7 @@ namespace Ae.Gengo.Client.Entities
         public IDictionary<string, CreatedJob[]> Jobs { get; set; }
 
         [DataMember(Name = "order_id")]
-        public int OrderId { get; set; }
+        public uint OrderId { get; set; }
 
         [DataMember(Name = "job_count")]
         public int JobCount { get; set; }
