@@ -11,7 +11,7 @@ namespace Ae.Gengo.Client.Internal
 {
     internal static class ClientExtensions
     {
-        private static readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings
+        private static readonly JsonSerializerSettings SERIALIZER_SETTINGS = new JsonSerializerSettings
         {
             Converters = new JsonConverter[] { new StringEnumConverter(), new BoolConverter() },
             NullValueHandling = NullValueHandling.Ignore
@@ -19,14 +19,14 @@ namespace Ae.Gengo.Client.Internal
 
         public static StringContent Serialize(this object payload)
         {
-            var json = JsonConvert.SerializeObject(payload, serializerSettings);
+            var json = JsonConvert.SerializeObject(payload, SERIALIZER_SETTINGS);
             return new StringContent(json, Encoding.UTF8);
         }
 
         public static async Task<TResponse> Deserialize<TResponse>(this HttpResponseMessage response)
         {
             var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<TResponse>(content, serializerSettings);
+            return JsonConvert.DeserializeObject<TResponse>(content, SERIALIZER_SETTINGS);
         }
 
         public static string ToQueryString(this NameValueCollection query)

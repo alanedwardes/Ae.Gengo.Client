@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Ae.Gengo.Client.Entities;
 using Ae.Gengo.Client.Operations;
@@ -18,11 +17,18 @@ namespace Ae.Gengo.Client
         /// <returns></returns>
         Task<CreatedJobs> CreateJobs(CreateJobs jobs, CancellationToken token);
         /// <summary>
+        /// Deletes a single job.
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        Task DeleteJob(uint jobId, CancellationToken token);
+        /// <summary>
         /// Gets a single translation job.
         /// </summary>
         /// <param name="jobId"></param>
         /// <returns></returns>
-        Task<SingleJob> GetJob(int jobId, CancellationToken token);
+        Task<SingleJob> GetJob(uint jobId, CancellationToken token);
         /// <summary>
         /// Get a list of jobs by IDs.
         /// </summary>
@@ -42,6 +48,12 @@ namespace Ae.Gengo.Client
         /// <param name="token"></param>
         /// <returns></returns>
         Task<CreatedJob[]> GetAllJobs(CancellationToken token);
+        /// <summary>
+        /// Page through all jobs on the account. Very expensive operation.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        Task<CreatedJob[]> GetAllJobs(JobStatus? status, CancellationToken token);
         /// <summary>
         /// Gets language pairs from the service.
         /// </summary>

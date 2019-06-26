@@ -39,19 +39,11 @@ namespace Ae.Gengo.Client
                 signature = string.Concat(hmac.ComputeHash(Encoding.UTF8.GetBytes(timestamp)).Select(x => x.ToString("x2")));
             }
 
-            if (request.Method == HttpMethod.Get)
+            bool hasStringBody = request.Content is StringContent && request.Content != null;
+
+            if (hasStringBody)
             {
-                var separator = string.IsNullOrWhiteSpace(request.RequestUri.Query) ? '?' : '&';
-
-                var uriBuilder = new UriBuilder(request.RequestUri);
-                uriBuilder.Query += $"{separator}api_key={_config.Key}&api_sig={signature}&ts={timestamp}";
-
-                request.RequestUri = uriBuilder.Uri;
-            }
-
-            if (request.Method == HttpMethod.Post && request.Content is StringContent)
-            {
-                var json = await request.Content.ReadAsStringAsync();
+                string json = await request.Content.ReadAsStringAsync();
                 request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     {"api_key", _config.Key},
@@ -59,6 +51,15 @@ namespace Ae.Gengo.Client
                     {"ts", timestamp},
                     {"data", json}
                 });
+            }
+            else
+            {
+                var separator = string.IsNullOrWhiteSpace(request.RequestUri.Query) ? '?' : '&';
+
+                var uriBuilder = new UriBuilder(request.RequestUri);
+                uriBuilder.Query += $"{separator}api_key={_config.Key}&api_sig={signature}&ts={timestamp}";
+
+                request.RequestUri = uriBuilder.Uri;
             }
 
             var response = await base.SendAsync(request, token);

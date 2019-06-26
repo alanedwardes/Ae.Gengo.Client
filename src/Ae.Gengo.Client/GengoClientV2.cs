@@ -14,7 +14,7 @@ namespace Ae.Gengo.Client
     /// <inheritdoc/>
     public sealed class GengoClientV2 : IGengoClientV2
     {
-        private readonly HttpClient httpClient;
+        private readonly HttpClient _httpClient;
 
         /// <summary>
         /// Create a new <see cref="GengoClientV2"/> with the specified <see cref="HttpClient"/>.
@@ -22,13 +22,13 @@ namespace Ae.Gengo.Client
         /// <param name="httpClient"></param>
         public GengoClientV2(HttpClient httpClient)
         {
-            this.httpClient = httpClient;
+            this._httpClient = httpClient;
         }
 
         /// <inheritdoc/>
         public async Task<CreatedJobs> CreateJobs(CreateJobs jobs, CancellationToken token)
         {
-            var response = await httpClient.PostAsync("v2/translate/jobs", jobs.Serialize(), token);
+            var response = await _httpClient.PostAsync("v2/translate/jobs", jobs.Serialize(), token);
             return await response.Deserialize<CreatedJobs>();
         }
 
@@ -52,19 +52,25 @@ namespace Ae.Gengo.Client
                 query.Add("count", getJobs.Count.Value.ToString());
             }
 
-            var response = await httpClient.GetAsync($"v2/translate/jobs{query.ToQueryString()}", token);
+            var response = await _httpClient.GetAsync($"v2/translate/jobs{query.ToQueryString()}", token);
             return await response.Deserialize<CreatedJobSummary[]>();
         }
 
         /// <inheritdoc/>
         public async Task<CreatedJobsByIds> GetJobsByIds(uint[] jobIds, CancellationToken token)
         {
-            var response = await httpClient.GetAsync($"v2/translate/jobs/{string.Join(",", jobIds)}", token);
+            var response = await _httpClient.GetAsync($"v2/translate/jobs/{string.Join(",", jobIds)}", token);
             return await response.Deserialize<CreatedJobsByIds>();
         }
 
         /// <inheritdoc/>
         public async Task<CreatedJob[]> GetAllJobs(CancellationToken token)
+        {
+            return await GetAllJobs(null, token);
+        }
+
+        /// <inheritdoc/>
+        public async Task<CreatedJob[]> GetAllJobs(JobStatus? status, CancellationToken token)
         {
             // This is half of the actual size
             // since the get by IDs operation uses
@@ -78,7 +84,12 @@ namespace Ae.Gengo.Client
 
             do
             {
-                CreatedJobSummary[] summaries = await GetJobsPage(new GetJobs{ Count = batchSize, After = after}, token);
+                CreatedJobSummary[] summaries = await GetJobsPage(new GetJobs
+                {
+                    Count = batchSize,
+                    After = after,
+                    Status = status
+                }, token);
                 if (!summaries.Any())
                 {
                     break;
@@ -96,21 +107,27 @@ namespace Ae.Gengo.Client
         /// <inheritdoc/>
         public async Task<LanguagePair[]> GetLanguagePairs(CancellationToken token)
         {
-            var response = await httpClient.GetAsync("v2/translate/service/language_pairs", token);
+            var response = await _httpClient.GetAsync("v2/translate/service/language_pairs", token);
             return await response.Deserialize<LanguagePair[]>();
         }
 
         /// <inheritdoc/>
-        public async Task<SingleJob> GetJob(int jobId, CancellationToken token)
+        public async Task<SingleJob> GetJob(uint jobId, CancellationToken token)
         {
-            var response = await httpClient.GetAsync($"v2/translate/job/{jobId}", token);
+            var response = await _httpClient.GetAsync($"v2/translate/job/{jobId}", token);
             return await response.Deserialize<SingleJob>();
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteJob(uint jobId, CancellationToken token)
+        {
+            await _httpClient.DeleteAsync($"v2/translate/job/{jobId}", token);
         }
 
         /// <inheritdoc/>
         public async Task<MeResponse> GetMe(CancellationToken token)
         {
-            var response = await httpClient.GetAsync("v2/account/me", token);
+            var response = await _httpClient.GetAsync("v2/account/me", token);
             return await response.Deserialize<MeResponse>();
         }
     }
