@@ -22,7 +22,7 @@ namespace Ae.Gengo.Client
         /// <param name="httpClient"></param>
         public GengoClientV2(HttpClient httpClient)
         {
-            this._httpClient = httpClient;
+            _httpClient = httpClient;
         }
 
         /// <inheritdoc/>
