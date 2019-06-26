@@ -97,11 +97,11 @@ namespace Ae.Gengo.Client
 
                 var jobBatch = await GetJobsByIds(summaries.Select(x => x.JobId).ToArray(), token);
                 jobs.AddRange(jobBatch.Jobs);
-                after = summaries.OrderBy(x => x.SubmitTimeMarshaled).Last().SubmitTimeMarshaled;
+                after = summaries.OrderBy(x => x.SubmitTime).Last().SubmitTime;
             }
             while (true);
 
-            return jobs.OrderBy(x => x.SubmitTimeMarshaled).ToArray();
+            return jobs.OrderBy(x => x.SubmitTime).ToArray();
         }
 
         /// <inheritdoc/>

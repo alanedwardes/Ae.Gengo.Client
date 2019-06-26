@@ -46,23 +46,13 @@ namespace Ae.Gengo.Client.Entities
         /// Estimated seconds until completion.
         /// </summary>
         [DataMember(Name = "eta")]
-        public int Eta { get; set; }
-
-        /// <summary>
-        /// Estimated time until completion.
-        /// </summary>
-        public TimeSpan EtaMarshaled => TimeSpan.FromSeconds(Eta);
+        public TimeSpan? Eta { get; set; }
 
         /// <summary>
         /// Unix Timestamp for when this job was submitted (by you - not by the translator).
         /// </summary>
         [DataMember(Name = "ctime")]
-        public long SubmitTime { get; set; }
-
-        /// <summary>
-        /// When this job was submitted (by you - not by the translator).
-        /// </summary>
-        public DateTimeOffset SubmitTimeMarshaled => DateTimeOffset.FromUnixTimeSeconds(SubmitTime);
+        public DateTimeOffset SubmitTime { get; set; }
 
         /// <summary>
         /// The full URL of source file (returned with the callback).

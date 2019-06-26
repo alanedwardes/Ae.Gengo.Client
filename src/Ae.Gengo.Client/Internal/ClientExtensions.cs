@@ -13,7 +13,7 @@ namespace Ae.Gengo.Client.Internal
     {
         private static readonly JsonSerializerSettings SERIALIZER_SETTINGS = new JsonSerializerSettings
         {
-            Converters = new JsonConverter[] { new StringEnumConverter(), new BoolConverter() },
+            Converters = new JsonConverter[] { new StringEnumConverter(), new BoolConverter(), new UnixDateTimeConverter(), new TimeSpanConverter() },
             NullValueHandling = NullValueHandling.Ignore
         };
 

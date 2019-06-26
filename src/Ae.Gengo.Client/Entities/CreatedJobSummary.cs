@@ -16,11 +16,6 @@ namespace Ae.Gengo.Client.Entities
         /// Unix Timestamp for when this job was submitted (by you - not by the translator).
         /// </summary>
         [DataMember(Name = "ctime")]
-        public long SubmitTime { get; set; }
-
-        /// <summary>
-        /// When this job was submitted (by you - not by the translator).
-        /// </summary>
-        public DateTimeOffset SubmitTimeMarshaled => DateTimeOffset.FromUnixTimeSeconds(SubmitTime);
+        public DateTimeOffset SubmitTime { get; set; }
     }
 }
