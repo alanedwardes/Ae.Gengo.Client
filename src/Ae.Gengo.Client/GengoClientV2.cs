@@ -33,6 +33,13 @@ namespace Ae.Gengo.Client
         }
 
         /// <inheritdoc/>
+        public async Task<QuotedJobs> QuoteJobs(QuoteJobs jobs, CancellationToken token)
+        {
+            var response = await _httpClient.PostAsync("v2/translate/service/quote", jobs.Serialize(), token);
+            return await response.Deserialize<QuotedJobs>();
+        }
+
+        /// <inheritdoc/>
         public async Task<CreatedJobSummary[]> GetJobsPage(GetJobs getJobs, CancellationToken token)
         {
             var query = new NameValueCollection();

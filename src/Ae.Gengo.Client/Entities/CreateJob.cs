@@ -7,7 +7,7 @@ namespace Ae.Gengo.Client.Entities
     /// Job Payload - for submissions
     /// </summary>
     [DataContract]
-    public sealed class CreateJob : JobBase
+    public sealed class CreateJob : Job
     {
         /// <summary>
         /// Job type. Either ‘text’ (default) or ‘file’. Use ‘file’ for ordering file jobs via the API using job identifiers from the file quote function

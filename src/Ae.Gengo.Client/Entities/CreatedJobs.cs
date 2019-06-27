@@ -1,14 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace Ae.Gengo.Client.Entities
 {
     [DataContract]
-    public sealed class CreatedJobs
+    public sealed class CreatedJobs : JobDictionaryContainer<CreatedJob[]>
     {
-        [DataMember(Name = "jobs")]
-        public IDictionary<string, CreatedJob[]> Jobs { get; set; }
-
         [DataMember(Name = "order_id")]
         public uint OrderId { get; set; }
 

@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Ae.Gengo.Client.Entities
 {
     [DataContract]
-    public sealed class CreatedJob : JobBase
+    public sealed class CreatedJob : Job
     {
         /// <summary>
         /// Order ID

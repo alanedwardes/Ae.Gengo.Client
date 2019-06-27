@@ -3,31 +3,13 @@
 namespace Ae.Gengo.Client.Entities
 {
     [DataContract]
-    public abstract class JobBase
+    public abstract class Job : JobPrimitive
     {
         /// <summary>
         /// Original body of text (to be translated)
         /// </summary>
         [DataMember(Name = "body_src")]
         public string SourceBody { get; set; }
-
-        /// <summary>
-        /// Source language code. Gengo uses IETF codes to define languages and language pairs
-        /// </summary>
-        [DataMember(Name = "lc_src")]
-        public string SourceLanguageCode { get; set; }
-
-        /// <summary>
-        /// Target language code
-        /// </summary>
-        [DataMember(Name = "lc_tgt")]
-        public string TargetLanguageCode { get; set; }
-
-        /// <summary>
-        /// Quality level (“standard” or “pro”)
-        /// </summary>
-        [DataMember(Name = "tier")]
-        public QualityLevel Tier { get; set; }
 
         /// <summary>
         /// The full URL to which we will send system updates (completed jobs, new comments, etc.)

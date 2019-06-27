@@ -17,6 +17,12 @@ namespace Ae.Gengo.Client
         /// <returns></returns>
         Task<CreatedJobs> CreateJobs(CreateJobs jobs, CancellationToken token);
         /// <summary>
+        /// Gets a quote for a batch of translation jobs.
+        /// </summary>
+        /// <param name="jobs"></param>
+        /// <returns></returns>
+        Task<QuotedJobs> QuoteJobs(QuoteJobs jobs, CancellationToken token);
+        /// <summary>
         /// Deletes a single job.
         /// </summary>
         /// <param name="jobId"></param>
