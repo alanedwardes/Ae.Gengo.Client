@@ -66,9 +66,21 @@ namespace Ae.Gengo.Client
         /// <returns></returns>
         Task<LanguagePair[]> GetLanguagePairs(CancellationToken token);
         /// <summary>
-        /// Gets information about the current account.
+        /// Retrieves account information, such as email.
         /// </summary>
         /// <returns></returns>
         Task<MeResponse> GetMe(CancellationToken token);
+        /// <summary>
+        /// Retrieves preferred translators set by user.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        Task<PreferredTranslator[]> GetPreferredTranslators(CancellationToken token);
+        /// <summary>
+        /// Returns a list of supported languages and their language codes.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        Task<Language[]> GetLanguages(CancellationToken token);
     }
 }

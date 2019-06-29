@@ -137,5 +137,18 @@ namespace Ae.Gengo.Client
             var response = await _httpClient.GetAsync("v2/account/me", token);
             return await response.Deserialize<MeResponse>();
         }
+
+        /// <inheritdoc/>
+        public async Task<PreferredTranslator[]> GetPreferredTranslators(CancellationToken token)
+        {
+            var response = await _httpClient.GetAsync("v2/account/preferred_translators", token);
+            return await response.Deserialize<PreferredTranslator[]>();
+        }
+
+        public async Task<Language[]> GetLanguages(CancellationToken token)
+        {
+            var response = await _httpClient.GetAsync("v2/translate/service/languages", token);
+            return await response.Deserialize<Language[]>();
+        }
     }
 }
