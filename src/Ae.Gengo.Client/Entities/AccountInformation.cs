@@ -3,7 +3,7 @@
 namespace Ae.Gengo.Client.Entities
 {
     [DataContract]
-    public sealed class MeResponse
+    public sealed class AccountInformation
     {
         [DataMember(Name = "email")]
         public string Email { get; set; }

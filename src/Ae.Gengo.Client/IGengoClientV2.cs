@@ -66,10 +66,16 @@ namespace Ae.Gengo.Client
         /// <returns></returns>
         Task<LanguagePair[]> GetLanguagePairs(CancellationToken token);
         /// <summary>
+        /// Retrieves account stats, such as orders made.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        Task<AccountStats> GetAccountStats(CancellationToken token);
+        /// <summary>
         /// Retrieves account information, such as email.
         /// </summary>
         /// <returns></returns>
-        Task<MeResponse> GetMe(CancellationToken token);
+        Task<AccountInformation> GetAccountInformation(CancellationToken token);
         /// <summary>
         /// Retrieves preferred translators set by user.
         /// </summary>

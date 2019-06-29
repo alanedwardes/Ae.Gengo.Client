@@ -132,10 +132,17 @@ namespace Ae.Gengo.Client
         }
 
         /// <inheritdoc/>
-        public async Task<MeResponse> GetMe(CancellationToken token)
+        public async Task<AccountInformation> GetAccountInformation(CancellationToken token)
         {
             var response = await _httpClient.GetAsync("v2/account/me", token);
-            return await response.Deserialize<MeResponse>();
+            return await response.Deserialize<AccountInformation>();
+        }
+
+        /// <inheritdoc/>
+        public async Task<AccountStats> GetAccountStats(CancellationToken token)
+        {
+            var response = await _httpClient.GetAsync("v2/account/stats", token);
+            return await response.Deserialize<AccountStats>();
         }
 
         /// <inheritdoc/>
@@ -145,6 +152,7 @@ namespace Ae.Gengo.Client
             return await response.Deserialize<PreferredTranslator[]>();
         }
 
+        /// <inheritdoc/>
         public async Task<Language[]> GetLanguages(CancellationToken token)
         {
             var response = await _httpClient.GetAsync("v2/translate/service/languages", token);
