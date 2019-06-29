@@ -139,6 +139,13 @@ namespace Ae.Gengo.Client
         }
 
         /// <inheritdoc/>
+        public async Task<AccountBalance> GetAccountBalance(CancellationToken token)
+        {
+            var response = await _httpClient.GetAsync("v2/account/balance", token);
+            return await response.Deserialize<AccountBalance>();
+        }
+
+        /// <inheritdoc/>
         public async Task<AccountStats> GetAccountStats(CancellationToken token)
         {
             var response = await _httpClient.GetAsync("v2/account/stats", token);

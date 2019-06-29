@@ -77,6 +77,12 @@ namespace Ae.Gengo.Client
         /// <returns></returns>
         Task<AccountInformation> GetAccountInformation(CancellationToken token);
         /// <summary>
+        /// Retrieves account balance in credits.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        Task<AccountBalance> GetAccountBalance(CancellationToken token);
+        /// <summary>
         /// Retrieves preferred translators set by user.
         /// </summary>
         /// <param name="token"></param>
