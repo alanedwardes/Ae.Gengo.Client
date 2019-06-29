@@ -79,10 +79,9 @@ namespace Ae.Gengo.Client
         /// <inheritdoc/>
         public async Task<CreatedJob[]> GetAllJobs(JobStatus? status, CancellationToken token)
         {
-            // This is half of the actual size
-            // since the get by IDs operation uses
-            // the query string
-            const int batchSize = 100;
+            // This could potentially miss jobs from orders
+            // orders with more than 200 jobs. API issue.
+            const int batchSize = 200;
 
             var jobs = new List<CreatedJob>();
 
@@ -97,6 +96,7 @@ namespace Ae.Gengo.Client
                     After = after,
                     Status = status
                 }, token);
+
                 if (!summaries.Any())
                 {
                     break;
