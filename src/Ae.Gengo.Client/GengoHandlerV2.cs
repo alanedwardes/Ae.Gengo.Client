@@ -1,7 +1,8 @@
 ﻿using Ae.Gengo.Client.Entities;
+using Ae.Gengo.Client.Internal;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -17,6 +18,7 @@ namespace Ae.Gengo.Client
     public sealed class GengoHandlerV2 : DelegatingHandler
     {
         private readonly IGengoConfigV2 _config;
+        private readonly HashAlgorithm _hasher;
 
         /// <summary>
         /// Create a new instance of the <see cref="GengoHandlerV2"/> with the specified <see cref="IGengoConfigV2"/>.
@@ -25,48 +27,46 @@ namespace Ae.Gengo.Client
         public GengoHandlerV2(IGengoConfigV2 config)
         {
             _config = config;
+            _hasher = new HMACSHA1(Encoding.UTF8.GetBytes(config.Secret));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _hasher?.Dispose();
+            base.Dispose(disposing);
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken token)
         {
-            request.Headers.Add("Accept", "application/json");
+            // Gengo authentication - https://developers.gengo.com/v2/authentication/
+            string timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+            string signature = string.Concat(_hasher.ComputeHash(Encoding.UTF8.GetBytes(timestamp)).Select(x => x.ToString("x2")));
 
-            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
-
-            string signature;
-            using (HMACSHA1 hmac = new HMACSHA1(Encoding.UTF8.GetBytes(_config.Secret)))
+            // Used for both POST and GET requests
+            var payload = new NameValueCollection
             {
-                signature = string.Concat(hmac.ComputeHash(Encoding.UTF8.GetBytes(timestamp)).Select(x => x.ToString("x2")));
-            }
+                {"api_key", _config.Key},
+                {"api_sig", signature},
+                {"ts", timestamp}
+            };
 
+            // Pick whether to use query string or form data authentication
             bool hasStringBody = request.Content is StringContent && request.Content != null;
-
             if (hasStringBody)
             {
-                string json = await request.Content.ReadAsStringAsync();
-                request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
-                {
-                    {"api_key", _config.Key},
-                    {"api_sig", signature},
-                    {"ts", timestamp},
-                    {"data", json}
-                });
+                // We can't use FormUrlEncodedContent because it breaks if the content gets too big
+                // https://stackoverflow.com/questions/38440631/httpclient-the-uri-string-is-too-long
+                payload.Add("data", await request.Content.ReadAsStringAsync());
+                request.Content = new StringContent(payload.ToFormData(), null, "application/x-www-form-urlencoded");
             }
             else
             {
-                var separator = string.IsNullOrWhiteSpace(request.RequestUri.Query) ? '?' : '&';
-
-                var uriBuilder = new UriBuilder(request.RequestUri);
-                uriBuilder.Query += $"{separator}api_key={_config.Key}&api_sig={signature}&ts={timestamp}";
-
-                request.RequestUri = uriBuilder.Uri;
+                request.RequestUri = request.RequestUri.AddQueryItems(payload);
             }
 
             var response = await base.SendAsync(request, token);
 
-            var responseContent = await response.Content.ReadAsStringAsync();
-
-            var wrappedResponse = JsonConvert.DeserializeObject<WrappedResponse>(responseContent);
+            var wrappedResponse = JsonConvert.DeserializeObject<WrappedResponse>(await response.Content.ReadAsStringAsync());
             if (wrappedResponse.Status != OperationStatus.Ok)
             {
                 throw new GengoExceptionV2(wrappedResponse.Error);

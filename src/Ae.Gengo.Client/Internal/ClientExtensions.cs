@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Http;
@@ -29,16 +30,27 @@ namespace Ae.Gengo.Client.Internal
             return JsonConvert.DeserializeObject<TResponse>(content, SERIALIZER_SETTINGS);
         }
 
+        public static Uri AddQueryItems(this Uri uri, NameValueCollection queryItems)
+        {
+            var builder = new UriBuilder(uri);
+            var separator = string.IsNullOrWhiteSpace(builder.Query) ? "?" : "&";
+            builder.Query += separator + queryItems.ToFormData();
+            return builder.Uri;
+        }
+
         public static string ToQueryString(this NameValueCollection query)
         {
-            if (query.Count == 0)
+            return query.Count == 0 ? string.Empty : "?" + query.ToFormData();
+        }
+
+        public static string ToFormData(this NameValueCollection formData)
+        {
+            if (formData.Count == 0)
             {
                 return string.Empty;
             }
 
-            var items = query.AllKeys.SelectMany(key => query.GetValues(key).Select(value => $"{HttpUtility.UrlEncode(key)}={HttpUtility.UrlEncode(value)}"));
-
-            return "?" + string.Join("&", items);
+            return string.Join("&", formData.AllKeys.SelectMany(key => formData.GetValues(key).Select(value => $"{HttpUtility.UrlEncode(key)}={HttpUtility.UrlEncode(value)}")));
         }
     }
 }
