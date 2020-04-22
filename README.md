@@ -1,4 +1,4 @@
-# Ae.Gengo.Client ![https://www.nuget.org/packages/Ae.Gengo.Client](https://img.shields.io/nuget/v/Ae.Gengo.Client.svg)
+# Ae.Gengo.Client [![](https://img.shields.io/nuget/v/Ae.Gengo.Client.svg)](https://www.nuget.org/packages/Ae.Gengo.Client)
 C# client for the Gengo translation service API - https://gengo.com/
 
 ## Usage
