@@ -49,18 +49,6 @@ namespace Ae.Gengo.Client
         /// <returns></returns>
         Task<CreatedJobSummary[]> GetJobsPage(GetJobs getJobs, CancellationToken token);
         /// <summary>
-        /// Page through all jobs on the account. Very expensive operation.
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        Task<CreatedJob[]> GetAllJobs(CancellationToken token);
-        /// <summary>
-        /// Page through all jobs on the account. Very expensive operation.
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        Task<CreatedJob[]> GetAllJobs(JobStatus? status, CancellationToken token);
-        /// <summary>
         /// Gets language pairs from the service.
         /// </summary>
         /// <returns></returns>
@@ -94,5 +82,11 @@ namespace Ae.Gengo.Client
         /// <param name="token"></param>
         /// <returns></returns>
         Task<Language[]> GetLanguages(CancellationToken token);
+        /// <summary>
+        /// Returns information about a single order.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        Task<OrderById> GetOrderById(uint orderId, CancellationToken token);
     }
 }

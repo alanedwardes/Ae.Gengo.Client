@@ -7,7 +7,7 @@ namespace Ae.Gengo.Client.Entities
     public sealed class AccountStats
     {
         [DataMember(Name = "credits_spent")]
-        public float CreditsSpent { get; set; }
+        public decimal CreditsSpent { get; set; }
         [DataMember(Name = "user_since")]
         public DateTimeOffset UserSince { get; set; }
         [DataMember(Name = "currency")]

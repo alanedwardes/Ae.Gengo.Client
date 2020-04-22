@@ -1,10 +1,7 @@
 ﻿using Ae.Gengo.Client.Entities;
 using Ae.Gengo.Client.Internal;
 using Ae.Gengo.Client.Operations;
-using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -64,51 +61,17 @@ namespace Ae.Gengo.Client
         }
 
         /// <inheritdoc/>
+        public async Task<OrderById> GetOrderById(uint orderId, CancellationToken token)
+        {
+            var response = await _httpClient.GetAsync($"v2/translate/order/{orderId}", CancellationToken.None);
+            return await response.Deserialize<OrderById>();
+        }
+
+        /// <inheritdoc/>
         public async Task<CreatedJobsByIds> GetJobsByIds(uint[] jobIds, CancellationToken token)
         {
             var response = await _httpClient.GetAsync($"v2/translate/jobs/{string.Join(",", jobIds)}", token);
             return await response.Deserialize<CreatedJobsByIds>();
-        }
-
-        /// <inheritdoc/>
-        public async Task<CreatedJob[]> GetAllJobs(CancellationToken token)
-        {
-            return await GetAllJobs(null, token);
-        }
-
-        /// <inheritdoc/>
-        public async Task<CreatedJob[]> GetAllJobs(JobStatus? status, CancellationToken token)
-        {
-            // This could potentially miss jobs from orders
-            // orders with more than 200 jobs. API issue.
-            const int batchSize = 200;
-
-            var jobs = new List<CreatedJob>();
-
-            // Start when Gengo was founded
-            DateTimeOffset after = new DateTime(2008, 12, 01);
-
-            do
-            {
-                CreatedJobSummary[] summaries = await GetJobsPage(new GetJobs
-                {
-                    Count = batchSize,
-                    After = after,
-                    Status = status
-                }, token);
-
-                if (!summaries.Any())
-                {
-                    break;
-                }
-
-                var jobBatch = await GetJobsByIds(summaries.Select(x => x.JobId).ToArray(), token);
-                jobs.AddRange(jobBatch.Jobs);
-                after = summaries.OrderBy(x => x.SubmitTime).Last().SubmitTime;
-            }
-            while (true);
-
-            return jobs.OrderBy(x => x.SubmitTime).ToArray();
         }
 
         /// <inheritdoc/>

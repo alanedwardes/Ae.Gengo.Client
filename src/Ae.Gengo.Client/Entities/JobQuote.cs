@@ -22,7 +22,7 @@ namespace Ae.Gengo.Client.Entities
         public string SourceLanguageDetected { get; set; }
 
         [DataMember(Name = "credits")]
-        public float Credits { get; set; }
+        public decimal Credits { get; set; }
 
         [DataMember(Name = "custom_data")]
         public string CustomData { get; set; }

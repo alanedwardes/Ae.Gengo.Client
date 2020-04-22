@@ -6,7 +6,7 @@ namespace Ae.Gengo.Client.Entities
     public sealed class AccountBalance
     {
         [DataMember(Name = "credits")]
-        public float Credits { get; set; }
+        public decimal Credits { get; set; }
         [DataMember(Name = "currency")]
         public string Currency { get; set; }
     }

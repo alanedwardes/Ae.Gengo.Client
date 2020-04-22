@@ -12,7 +12,7 @@ namespace Ae.Gengo.Client.Entities
         public int JobCount { get; set; }
 
         [DataMember(Name = "credits_used")]
-        public float CreditsUsed { get; set; }
+        public decimal CreditsUsed { get; set; }
 
         [DataMember(Name = "currency")]
         public string Currency { get; set; }

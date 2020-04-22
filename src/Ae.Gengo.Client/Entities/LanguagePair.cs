@@ -12,7 +12,7 @@ namespace Ae.Gengo.Client.Entities
         [DataMember(Name = "lc_tgt")]
         public string TargetLanguage { get; set; }
         [DataMember(Name = "unit_price")]
-        public float UnitPrice { get; set; }
+        public decimal UnitPrice { get; set; }
         [DataMember(Name = "currency")]
         public string Currency { get; set; }
         [DataMember(Name = "tier")]
