@@ -27,7 +27,7 @@ IGengoConfigV2 config = new GengoConfigV2
     Secret = "secret"
 };
 
-var handler = new GengoHandlerV2(sandboxConfig)
+var handler = new GengoHandlerV2(config)
 {
     InnerHandler = new HttpClientHandler()
 };
